@@ -11,7 +11,10 @@ module ActiveAdmin
       protected
 
       def title
-        @section.name.to_s.titleize
+        I18n.t(@section.name,
+          :scope => [ :active_admin, :dashboards, @section.namespace ],
+          :default => @section.name.to_s.titleize
+        )
       end
 
     end
