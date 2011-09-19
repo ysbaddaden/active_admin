@@ -16,11 +16,16 @@ module ActiveAdmin
 
       def build_scope(scope)
         span :class => classes_for_scope(scope) do
-          begin
-            scope_name = I18n.t!("active_admin.scopes.#{scope.scope_method}")
-          rescue I18n::MissingTranslationData
-            scope_name = scope.name
+          i18n_scope = if scoping_class.respond_to?(:model_name)
+            scoping_class.model_name.i18n_key
+          else
+            scoping_class.name.underscore
           end
+          
+          scope_name = I18n.t("resources.#{i18n_scope}.scopes.#{scope.id}",
+            :scope   => "active_admin",
+            :default => [ "scopes.#{scope.id}".to_sym, scope.name ]
+          )
 
           if current_scope?(scope)
             em(scope_name)
