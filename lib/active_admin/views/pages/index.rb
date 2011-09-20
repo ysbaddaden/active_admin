@@ -5,7 +5,7 @@ module ActiveAdmin
       class Index < Base
 
         def title
-          active_admin_config.plural_resource_name
+          active_admin_config.human_name.pluralize
         end
 
         def config
@@ -62,22 +62,30 @@ module ActiveAdmin
         end
         
         def render_blank_slate
-          blank_slate_content = I18n.t("active_admin.blank_slate.content", :resource_name => active_admin_config.resource_name.pluralize)
+          blank_slate_content = I18n.t("activeadmin.resources.#{active_admin_config.i18n_scope}.blank_slate.content",
+            :default => :"active_admin.blank_slate.content",
+            :resource_name => active_admin_config.human_name
+          )
           if controller.action_methods.include?('new')
-            blank_slate_content += " " + link_to(I18n.t("active_admin.blank_slate.link"), new_resource_path)
+            txt = I18n.t("activeadmin.resources.#{active_admin_config.i18n_scope}.blank_slate.link",
+              :default => :"active_admin.blank_slate.link")
+            blank_slate_content += " " + link_to(txt, new_resource_path)
           end
           insert_tag(view_factory.blank_slate, blank_slate_content)
         end
         
         def render_empty_results
-          empty_results_content = I18n.t("active_admin.pagination.empty", :model => active_admin_config.resource_name.pluralize)
+          empty_results_content = I18n.t("activeadmin.resources.#{active_admin_config.i18n_scope}.pagination.empty",
+            :default => :"active_admin.pagination.empty",
+            :resource_name => active_admin_config.human_name
+          )
           insert_tag(view_factory.blank_slate, empty_results_content)
         end
         
         def render_index
           renderer_class = find_index_renderer_class(config[:as])
           
-          paginated_collection(collection, :entry_name => active_admin_config.resource_name) do
+          paginated_collection(collection, :entry_name => active_admin_config.human_name) do
             div :class => 'index_content' do
               insert_tag(renderer_class, config, collection)
             end

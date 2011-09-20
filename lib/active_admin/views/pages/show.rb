@@ -28,7 +28,11 @@ module ActiveAdmin
         end
 
         def attributes_table(*args, &block)
-          panel(I18n.t('active_admin.details', :model => active_admin_config.resource_name)) do
+          heading = I18n.t('active_admin.resources.#{active_admin_config.resource_name}.details',
+            :defaults => :'active_admin.details',
+            :model => active_admin_config.resource_name)
+#          panel(I18n.t('active_admin.details', :model => active_admin_config.resource_name)) do
+          panel(heading) do
             attributes_table_for resource, *args, &block
           end
         end
@@ -36,7 +40,7 @@ module ActiveAdmin
         protected
 
         def default_title
-          "#{active_admin_config.resource_name} ##{resource.id}"
+          "#{active_admin_config.human_name} ##{resource.id}"
         end
 
         module DefaultMainContent

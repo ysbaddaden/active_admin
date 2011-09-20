@@ -13,30 +13,52 @@ module ActiveAdmin
 
       # A camelized safe representation for this resource
       def camelized_resource_name
-        underscored_resource_name.camelize
+        @camelized_resource_name = underscored_resource_name.camelize
       end
 
       # Returns the name to call this resource.
       # By default will use resource.model_name.human
       def resource_name
-        @resource_name ||= if @options[:as] || !resource.respond_to?(:model_name)
-          underscored_resource_name.titleize
-        else
-          resource.model_name.human.titleize
-        end
+         @resource_name ||= underscored_resource_name.titleize
+         
+#        @resource_name ||= if @options[:as] || !resource.respond_to?(:model_name)
+#          underscored_resource_name.titleize
+#        else
+#          resource.model_name.human.titleize
+#        end
       end
 
       # Returns the plural version of this resource
       def plural_resource_name
-        @plural_resource_name ||= if @options[:as] || !resource.respond_to?(:model_name)
-          resource_name.pluralize
-        else
-          # Check if we have a translation available otherwise pluralize
-          begin
-            I18n.translate!("activerecord.models.#{resource.model_name.downcase}")
-            resource.model_name.human(:count => 3)
-          rescue I18n::MissingTranslationData
-            resource_name.pluralize
+        @plural_resource_name ||= resource_name.pluralize
+        
+#        @plural_resource_name ||= if @options[:as] || !resource.respond_to?(:model_name)
+#          resource_name.pluralize
+#        else
+#          # Check if we have a translation available otherwise pluralize
+#          begin
+#            I18n.translate!("activerecord.models.#{resource.model_name.downcase}")
+#            resource.model_name.human(:count => 3)
+#          rescue I18n::MissingTranslationData
+#            resource_name.pluralize
+#          end
+#        end
+      end
+
+      def i18n_scope
+        resource_name.underscore
+      end
+
+      # Returns the human translation for this model.
+      def human_name(options = {})
+        begin
+          options[:count] ||= 3
+          I18n.t!("activeadmin.resources.#{resource_name}", options)
+        rescue
+          if resource.respond_to?(:model_name)
+            resource.model_name.human
+          else
+            resource_name
           end
         end
       end

@@ -4,7 +4,7 @@ module ActiveAdmin
       class Edit < Base
 
         def title
-          I18n.t('active_admin.edit_model', :model => active_admin_config.resource_name)
+          I18n.t('active_admin.edit_model', :model => active_admin_config.human_name)
         end
 
         def main_content

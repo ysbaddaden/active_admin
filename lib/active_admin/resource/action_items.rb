@@ -49,23 +49,29 @@ module ActiveAdmin
         # New Link on all actions except :new and :show
         add_action_item :except => [:new, :show] do
           if controller.action_methods.include?('new')
-            link_to(I18n.t('active_admin.new_model', :model => active_admin_config.resource_name), new_resource_path)
+            txt = I18n.t('activeadmin.resources.#{active_admin_config.resource_name}.links.new_model',
+              :default => :"active_admin.new_model", :model => active_admin_config.human_name)
+            link_to(txt, new_resource_path)
           end
         end
 
         # Edit link on show
         add_action_item :only => :show do
           if controller.action_methods.include?('edit')
-            link_to(I18n.t('active_admin.edit_model', :model => active_admin_config.resource_name), edit_resource_path(resource))
+            txt = I18n.t('activeadmin.resources.#{active_admin_config.resource_name}.links.edit_model',
+              :default => :"active_admin.edit_model", :model => active_admin_config.human_name)
+            link_to(txt, edit_resource_path(resource))
           end
         end
 
         # Destroy link on show
         add_action_item :only => :show do
           if controller.action_methods.include?("destroy")
-            link_to(I18n.t('active_admin.delete_model', :model => active_admin_config.resource_name),
-              resource_path(resource),
-              :method => :delete, :confirm => I18n.t('active_admin.delete_confirmation'))
+            txt = I18n.t('activeadmin.resources.#{active_admin_config.resource_name}.links.delete_model',
+              :default => :"active_admin.delete_model", :model => active_admin_config.human_name)
+            confirm_txt = I18n.t('activeadmin.resources.#{active_admin_config.resource_name}.links.delete_confirmation',
+              :default => :"active_admin.delete_confirmation", :model => active_admin_config.human_name)
+            link_to(txt, resource_path(resource), :method => :delete, :confirm => confirm_txt)
           end
         end
       end

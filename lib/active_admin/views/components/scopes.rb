@@ -21,10 +21,9 @@ module ActiveAdmin
           else
             scoping_class.name.underscore
           end
-          
-          scope_name = I18n.t("resources.#{i18n_scope}.scopes.#{scope.id}",
-            :scope   => "active_admin",
-            :default => [ "scopes.#{scope.id}".to_sym, scope.name ]
+
+          scope_name = I18n.t("activeadmin.resources.#{i18n_scope}.scopes.#{scope.id}",
+            :default => [ "activeadmin.scopes.#{scope.id}".to_sym, scope.name ]
           )
 
           if current_scope?(scope)
