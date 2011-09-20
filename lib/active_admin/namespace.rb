@@ -199,7 +199,10 @@ module ActiveAdmin
         # Update the url if it's already been created
         add_to[config.menu_item_name].url = config.route_collection_path
       else
-        add_to.add(config.menu_item_name, config.route_collection_path, config.menu_item_priority, { :if => config.menu_item_display_if })
+        add_to.add(config.menu_item_name, config.route_collection_path, config.menu_item_priority, {
+          :if => config.menu_item_display_if,
+          :human_name => lambda { config.human_name.pluralize }
+        })
       end
     end
   end

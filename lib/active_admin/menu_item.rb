@@ -12,6 +12,7 @@ module ActiveAdmin
       @cached_url = {} # Stores the cached url in a hash to allow us to change it and still cache it
 
       @display_if_block = options.delete(:if)
+      @human_name = options.delete(:human_name)
       
       yield(self) if block_given? # Builder style syntax
     end
@@ -67,6 +68,10 @@ module ActiveAdmin
     # a default block always returning true will be returned.
     def display_if_block
       @display_if_block || lambda { |_| true }
+    end
+
+    def human_name
+      @human_name ? @human_name.call : name
     end
 
   end  
