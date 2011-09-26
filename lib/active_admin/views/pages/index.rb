@@ -77,7 +77,7 @@ module ActiveAdmin
         def render_empty_results
           empty_results_content = I18n.t("activeadmin.resources.#{active_admin_config.i18n_scope}.pagination.empty",
             :default => :"active_admin.pagination.empty",
-            :resource_name => active_admin_config.human_name
+            :model => active_admin_config.human_name
           )
           insert_tag(view_factory.blank_slate, empty_results_content)
         end
