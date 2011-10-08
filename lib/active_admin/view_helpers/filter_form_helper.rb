@@ -14,9 +14,11 @@ module ActiveAdmin
         clear_link = link_to(I18n.t('active_admin.clear_filters'), "#", :class => "clear_filters_btn")
         form_for search, options do |f|
           filters.each do |filter_options|
-            filter_options = filter_options.dup
-            attribute = filter_options.delete(:attribute)
-            f.filter attribute, filter_options
+            if filter_options[:if] == nil or (filter_options[:if] && filter_options[:if].call)
+              filter_options = filter_options.dup
+              attribute = filter_options.delete(:attribute)
+              f.filter attribute, filter_options
+            end
           end
 
           buttons = content_tag :div, :class => "buttons" do
