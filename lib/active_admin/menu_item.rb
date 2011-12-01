@@ -32,7 +32,7 @@ module ActiveAdmin
     end
     
     def dom_id
-      name.downcase.gsub( " ", '_' ).gsub( /[^a-z0-9_]/, '' )
+      name.to_s.downcase.gsub( " ", '_' ).gsub( /[^a-z0-9_]/, '' )
     end
     
     def url
