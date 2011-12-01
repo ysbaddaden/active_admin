@@ -60,7 +60,7 @@ module ActiveAdmin
     
     def <=>(other)
       result = priority <=> other.priority
-      result = name <=> other.name if result == 0
+      result = name.to_s <=> other.name.to_s if result == 0
       result
     end
     
@@ -71,7 +71,13 @@ module ActiveAdmin
     end
 
     def human_name
-      @human_name ? @human_name.call : name
+      if @human_name
+        @human_name.call
+      elsif name.is_a?(Symbol)
+        I18n.t(name, :scope => [ :admin, :menu ])
+      else
+        name.to_s
+      end
     end
 
   end  
